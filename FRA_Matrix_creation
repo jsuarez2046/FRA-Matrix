@@ -48,8 +48,8 @@ fra_matrix <- fra_matrix +
 time_points <- data.frame(
   x = c(4, 18, 46, 64),
   y = c(8, 25, 9, 26),
-  hjust = c(-0.15, -0.15, -0.15, -0.15), # hjust is left (positive value) to right
-  vjust = c(1, 1, 1, 1) # vjust is up (negative value) and down
+  hjust = c(-0.15, -0.15, -0.15, -0.15),
+  vjust = c(1, 1, 1, 1) 
 )
 
 
@@ -66,20 +66,14 @@ update_labels <- function(df) {
 time_points <- update_labels(time_points)
 
 
-
-
-
-############################plotting together  ***CHANGE**
-final <- fra_matrix + geom_point(data = time_points, aes(x=x, y=y), size = 6)+ # SIZE OF POINTS FOR TIME POINTS
-  geom_text(data = time_points, aes(x=x,y=y, label = label), fontface = "italic", hjust = time_points$hjust, vjust = time_points$vjust, size = 6) #+
-  #annotate("text", x = 80, y = 30, label = "1001",hjust = 1, vjust = 1.25, size = 6) 
+final <- fra_matrix + geom_point(data = time_points, aes(x=x, y=y), size = 6)+ 
+  geom_text(data = time_points, aes(x=x,y=y, label = label), fontface = "italic", hjust = time_points$hjust, vjust = time_points$vjust, size = 6)
 
 
 
 
-############################### CHANGE PDF name
 # Save to PDF
-#pdf("Example FRA.pdf", width = 11, height = 8.5)  # Adjust the width and height as needed
+pdf("Example FRA.pdf", width = 11, height = 8.5)  # Adjust the width and height as needed
 grid.newpage()
 grid.draw(ggplotGrob(final))
 
@@ -95,4 +89,7 @@ grid.text("low\nperceived\nfall risk", x = unit(0.2, "npc"), y = unit(0.4, "npc"
 grid.text("high\nperceived\nfall risk", x = unit(0.2, "npc"), y = unit(0.75, "npc"), 
           gp = gpar(col = "black", fontface = "italic", fontsize = 15))
 
-#dev.off()
+dev.off()
+
+
+
