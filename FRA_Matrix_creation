@@ -2,7 +2,7 @@ library(ggplot2)
 library(grid)
 
 
-# Create a data frame for the quadrants and their labels
+########################## Create a data frame for the quadrants and their labels
 quadrants <- data.frame(
   xmin = c(0, 30, 0, 30),
   xmax = c(30, 80, 30, 80),
@@ -13,10 +13,11 @@ quadrants <- data.frame(
   label_color = c("chartreuse4", "red", "blue", "black")
 )
 
-# Create the base plot
+########################## Create the base plot
 fra_matrix <- ggplot() + theme_bw() +
   geom_rect(data = quadrants, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), alpha = 0.2) +
-  geom_text(data = quadrants, aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label), fontface = "bold", color = quadrants$label_color, size = 5) +
+  geom_text(data = quadrants, aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, 
+                                  label = label), fontface = "bold", color = quadrants$label_color, size = 7) +
   scale_x_continuous(name = "BTrackS Balance Test Score", limits = c(0, 80), breaks = seq(0, 80, by = 5), expand = c(0, 0)) +
   scale_y_continuous(name = "Fall-Efficacy\nScale Score", limits = c(0, 30), breaks = seq(0, 30, by = 5),expand = c(0, 0)) +
   scale_fill_identity() +
@@ -26,16 +27,16 @@ fra_matrix <- ggplot() + theme_bw() +
     plot.title = element_text(hjust = 0.5, vjust = 2.5, size = 32, face = "bold"),
     plot.margin = unit(c(1.7,1,1,1), "cm") , #top, right, bottom, left
     text = element_text(size = 20),
-    axis.title.y = element_text(size = 21, face = "bold",angle = 0, margin = margin(r = 50), vjust = 0.5),
-    axis.title.x = element_text(size = 21, face = "bold", margin = margin(t = 80)),
-    axis.text.y = element_text(size = 18),
-    axis.text.x = element_text(size = 18),
+    axis.title.y = element_text(size = 25, face = "bold",angle = 0, margin = margin(r = 50), vjust = 0.5),
+    axis.title.x = element_text(size = 25, face = "bold", margin = margin(t = 80)),
+    axis.text.y = element_text(size = 21),
+    axis.text.x = element_text(size = 21),
     panel.border = element_blank(),
     axis.line = element_line(color = "black", size = 1.25)
   )
 
 
-# Add dashed lines for the quadrant borders
+########################## Add dashed lines for the quadrant borders
 fra_matrix <- fra_matrix +
   geom_segment(aes(x = 30, y = 0, xend = 30, yend = 30), linetype = "dashed", size = 1) +  # Vertical dashed line
   geom_segment(aes(x = 0, y = 10, xend = 80, yend = 10), linetype = "dashed", size = 1)   # Horizontal dashed line
@@ -44,9 +45,9 @@ fra_matrix <- fra_matrix +
 
 
 
-########################## this is where the points must be changed  ***CHANGE****
+########################## Change time point data
 time_points <- data.frame(
-  x = c(4, 18, 46, 64),
+  x = c(4, 16, 46, 64),
   y = c(8, 25, 9, 26),
   hjust = c(-0.15, -0.15, -0.15, -0.15),
   vjust = c(1, 1, 1, 1) 
@@ -56,40 +57,40 @@ time_points <- data.frame(
 
 
 
-# Function to update labels based on x and y values
+########################## Function to update labels based on x and y values
 update_labels <- function(df) {
   df$label <- paste0("Milestone ", seq_along(df$x), " \n(", df$x, ",", df$y, ")") #"" creates the words before the milestone
   return(df)
 }
 
-# Update labels
+########################## Update labels
 time_points <- update_labels(time_points)
 
 
-final <- fra_matrix + geom_point(data = time_points, aes(x=x, y=y), size = 6)+ 
-  geom_text(data = time_points, aes(x=x,y=y, label = label), fontface = "italic", hjust = time_points$hjust, vjust = time_points$vjust, size = 6)
+########################## Create final Matrix
+final <- fra_matrix + geom_point(data = time_points, aes(x=x, y=y), size = 7)+ 
+  geom_text(data = time_points, aes(x=x,y=y, label = label), fontface = "italic", 
+            hjust = time_points$hjust, vjust = time_points$vjust, size = 7) +
+  annotate("text", x = 80, y = 30, label = "ID: 23",hjust = 1, vjust = 1.25, size = 6) 
 
 
 
 
-# Save to PDF
-pdf("Example FRA.pdf", width = 11, height = 8.5)  # Adjust the width and height as needed
+########################## Save to PDF
+pdf("Example FRA.pdf", width = 15, height = 11.6)  # Adjust the width and height as needed
 grid.newpage()
 grid.draw(ggplotGrob(final))
 
 
 
-# Add text annotation outside the plot area
-grid.text("low\nphysiological fall risk", x = unit(0.42, "npc"), y = unit(0.16, "npc"), 
-          gp = gpar(col = "black", fontface = "italic", fontsize = 15))
-grid.text("high\nphysiological fall risk", x = unit(0.8, "npc"), y = unit(0.16, "npc"), 
-          gp = gpar(col = "black", fontface = "italic", fontsize = 15))
-grid.text("low\nperceived\nfall risk", x = unit(0.2, "npc"), y = unit(0.4, "npc"), 
-          gp = gpar(col = "black", fontface = "italic", fontsize = 15))
-grid.text("high\nperceived\nfall risk", x = unit(0.2, "npc"), y = unit(0.75, "npc"), 
-          gp = gpar(col = "black", fontface = "italic", fontsize = 15))
+########################## Add text annotation outside the plot area
+grid.text("low\nphysiological fall risk", x = unit(0.36, "npc"), y = unit(0.12, "npc"), 
+          gp = gpar(col = "black", fontface = "italic", fontsize = 19))
+grid.text("high\nphysiological fall risk", x = unit(0.8, "npc"), y = unit(0.12, "npc"), 
+          gp = gpar(col = "black", fontface = "italic", fontsize = 19))
+grid.text("low\nperceived\nfall risk", x = unit(0.16, "npc"), y = unit(0.35, "npc"), 
+          gp = gpar(col = "black", fontface = "italic", fontsize = 19))
+grid.text("high\nperceived\nfall risk", x = unit(0.16, "npc"), y = unit(0.8, "npc"), 
+          gp = gpar(col = "black", fontface = "italic", fontsize = 19))
 
 dev.off()
-
-
-
